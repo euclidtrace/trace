@@ -205,20 +205,20 @@ func generateID(name string, inputs map[string]Value) string {
 	// Create a hash of the name and inputs for deterministic ID
 	h := sha256.New()
 	h.Write([]byte(name))
-	
+
 	// Sort keys to ensure deterministic ordering
 	keys := make([]string, 0, len(inputs))
 	for k := range inputs {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
-	
+
 	// Hash each key-value pair in sorted order
 	for _, k := range keys {
 		h.Write([]byte(k))
 		h.Write([]byte(fmt.Sprintf("%v", inputs[k].Value)))
 	}
-	
+
 	// Return first 16 characters of hex hash for readability
 	return fmt.Sprintf("%s-%x", name, h.Sum(nil)[:8])
 }
