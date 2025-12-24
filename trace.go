@@ -11,8 +11,10 @@
 package trace
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"time"
 )
 
@@ -155,8 +157,14 @@ func (t *Trace) WithMetadata(key, value string) error {
 func (t *Trace) String() string {
 	result := fmt.Sprintf("Trace: %s (ID: %s)\n", t.Name, t.ID)
 	result += "Inputs:\n"
-	for k, v := range t.Inputs {
-		result += fmt.Sprintf("  %s: %s\n", k, v)
+	// Sort keys to ensure deterministic output
+	keys := make([]string, 0, len(t.Inputs))
+	for k := range t.Inputs {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		result += fmt.Sprintf("  %s: %s\n", k, t.Inputs[k])
 	}
 	if len(t.Steps) > 0 {
 		result += "Steps:\n"
@@ -194,8 +202,23 @@ func copyInputs(inputs map[string]Value) map[string]Value {
 // generateID creates a deterministic ID for the trace based on name and inputs.
 // This ensures that the same inputs always produce the same trace ID.
 func generateID(name string, inputs map[string]Value) string {
-	// For deterministic ID generation, we create a hash of the name and inputs
-	// This is a simple implementation - in production, you might want to use
-	// a proper hash function like SHA256
-	return fmt.Sprintf("%s-%d", name, len(inputs))
+	// Create a hash of the name and inputs for deterministic ID
+	h := sha256.New()
+	h.Write([]byte(name))
+	
+	// Sort keys to ensure deterministic ordering
+	keys := make([]string, 0, len(inputs))
+	for k := range inputs {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	
+	// Hash each key-value pair in sorted order
+	for _, k := range keys {
+		h.Write([]byte(k))
+		h.Write([]byte(fmt.Sprintf("%v", inputs[k].Value)))
+	}
+	
+	// Return first 16 characters of hex hash for readability
+	return fmt.Sprintf("%s-%x", name, h.Sum(nil)[:8])
 }

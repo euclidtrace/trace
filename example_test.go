@@ -135,5 +135,5 @@ func ExampleTrace_toJSON() {
 	fmt.Printf("JSON length: %d bytes\n", len(jsonStr))
 	// Output:
 	// JSON generated successfully
-	// JSON length: 288 bytes
+	// JSON length: 302 bytes
 }
