@@ -1,1 +1,1 @@
-# trace
+This repository treats computation traces as mathematical facts, not debugging artifacts.
