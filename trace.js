@@ -30,12 +30,12 @@ async function showCellContent() {
             const range = context.workbook.getSelectedRange();
             range.load("values");
             await context.sync();
-            
+
             const display = document.getElementById("display");
             if (range.values && range.values.length > 0) {
-                 display.innerText = range.values[0][0];
+                display.innerText = range.values[0][0];
             } else {
-                 display.innerText = "No content";
+                display.innerText = "No content";
             }
         });
     } catch (error) {
