@@ -50,7 +50,7 @@ function createTreeView(data, key = null) {
     const header = document.createElement('div');
     const toggle = document.createElement('span');
     toggle.className = 'tree-toggle';
-    toggle.textContent = '[-]'; // Default expanded
+    toggle.textContent = '[+]'; // Default collapsed
     
     const label = document.createElement('span');
     if (key !== null) {
@@ -61,8 +61,10 @@ function createTreeView(data, key = null) {
     }
     
     const isArray = Array.isArray(data);
+    const keys = Object.keys(data);
+    const count = keys.length;
     const openBrace = document.createElement('span');
-    openBrace.textContent = isArray ? '[' : '{';
+    openBrace.textContent = isArray ? `[ ${count} items ]` : `{ ... }`;
     
     header.appendChild(toggle);
     header.appendChild(label);
@@ -70,7 +72,7 @@ function createTreeView(data, key = null) {
     container.appendChild(header);
 
     const children = document.createElement('ul');
-    const keys = Object.keys(data);
+    children.style.display = 'none';
     
     keys.forEach((k, i) => {
         const li = document.createElement('li');
@@ -88,6 +90,7 @@ function createTreeView(data, key = null) {
     const closeBrace = document.createElement('div');
     closeBrace.textContent = isArray ? ']' : '}';
     closeBrace.style.paddingLeft = '24px'; // Indent closing brace
+    closeBrace.style.display = 'none';
 
     container.appendChild(children);
     container.appendChild(closeBrace);
