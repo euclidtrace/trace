@@ -2,7 +2,7 @@
 
 # 1. Create tarball
 echo "Creating trace.tar.gz..."
-tar -zcvf trace.tar.gz assets manifest.xml trace.html trace.js
+tar -zcvf trace.tar.gz assets manifest.xml trace.html trace.js multidim_dag_resolution
 
 # 2. Send to server
 echo "Sending trace.tar.gz to server..."
