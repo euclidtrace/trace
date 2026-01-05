@@ -4,6 +4,15 @@ Office.onReady((info) => {
         document.getElementById('show-content-btn').addEventListener('click', showCellContent);
         document.getElementById('load-json-btn').addEventListener('click', loadJsonContent);
     }
+    
+    // Render the accounting equation header
+    const mathHeader = document.getElementById('math-header');
+    if (mathHeader && typeof katex !== 'undefined') {
+        katex.render('\\text{Assets} = \\text{Liabilities} + \\text{Equity}', mathHeader, {
+            throwOnError: false,
+            displayMode: true
+        });
+    }
 });
 
 function handleButtonClick() {
@@ -37,10 +46,31 @@ function createTreeView(data, key = null) {
             keySpan.textContent = `"${key}": `;
             span.appendChild(keySpan);
         }
-        const valSpan = document.createElement('span');
-        valSpan.className = `tree-${data === null ? 'null' : typeof data}`;
-        valSpan.textContent = JSON.stringify(data);
-        span.appendChild(valSpan);
+
+        const mathKeys = ['equation', 'term_expression', 'formula', 'set_predicate'];
+        if (key && mathKeys.includes(key) && typeof data === 'string') {
+            const mathSpan = document.createElement('span');
+            mathSpan.style.margin = '0 5px';
+            
+            if (typeof katex !== 'undefined') {
+                try {
+                    katex.render(data, mathSpan, {
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.warn('KaTeX error:', e);
+                    mathSpan.textContent = JSON.stringify(data);
+                }
+            } else {
+                mathSpan.textContent = JSON.stringify(data);
+            }
+            span.appendChild(mathSpan);
+        } else {
+            const valSpan = document.createElement('span');
+            valSpan.className = `tree-${data === null ? 'null' : typeof data}`;
+            valSpan.textContent = JSON.stringify(data);
+            span.appendChild(valSpan);
+        }
         return span;
     }
 

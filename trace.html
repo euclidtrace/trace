@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: sans-serif;
@@ -52,7 +54,8 @@
 </head>
 
 <body>
-    <h3>Euclid Trace</h3>
+    <h3>Euclid System</h3>
+    <div id="math-header" style="margin: 10px 0;"></div>
     <p>Select a cell to view metrics:</p>
     <div id="display" class="box">---</div>
     <button id="show-content-btn">Show Cell Content</button>
